@@ -4,6 +4,7 @@ import * as path from 'path';
 import * as url from 'url';
 import { autoUpdater } from 'electron-updater';
 import * as http from 'http';
+import {Error} from 'tslint/lib/error';
 
 let isInit = false;
 // winMap
@@ -11,19 +12,11 @@ const winIdMap = new Map<any, number>();
 let appTray: Tray;
 
 
-const args = process.argv.splice(2);
-
-
 let isServer = false;
 let host;
 let port;
 
-if (isServer = args.includes('--server')) {
-    port = getArgValue('--port') || 4200;
-    host = getArgValue('--host') || 'localhost';
-}
-
-function getArgValue(name: string): string | boolean {
+function getArgValue(args: string[], name: string): string | boolean {
     let argNameIndex;
     if (argNameIndex = args.indexOf(name)) {
         const argValueIndex = argNameIndex + 1;
@@ -47,18 +40,22 @@ function getArgValue(name: string): string | boolean {
  */
 export function createWindow(routerUrl: string, options: BrowserWindowConstructorOptions = {}, key = routerUrl): BrowserWindow {
     let win = new BrowserWindow({
-        hasShadow: true,
+        hasShadow: false,
         frame: false,
         transparent: true,
         show: false,
         ...options
     });
+    console.log(`创建窗口routerUrl：${routerUrl}`);
     if (isServer) {
+        const loadUrl = `http://${ host }:${ port }/#${ routerUrl }`;
+        console.log(`创建窗口加载服务：${loadUrl}`);
         // electronReload(app.getAppPath(), {
         //     electron: require(`${app.getAppPath()}/node_modules/electron`)
         // });
-        win.loadURL(`http://${ host }:${ port }/#${ routerUrl }`);
+        win.loadURL(loadUrl);
     } else {
+        console.log(`创建本地文件窗口`);
         win.loadURL(` ${ url.format({
             pathname: path.join(app.getAppPath(), `/dist/${ app.getName() }/index.html`),
             protocol: 'file:',
@@ -83,20 +80,19 @@ export function getWinIdByKey(key: string) {
     return winIdMap.has(key) ? winIdMap.get(key) : null;
 }
 
-export function initElectronMainIpcListener(options: {
-    isServer: boolean,
-    host?: string,
-    port?: number
-}) {
+export function initElectronMainIpcListener() {
     if (!isInit) {
+        const args = process.argv.splice(2);
+        console.log(`初始化ngx-electron-main, 启动参数：${JSON.stringify(args)}`);
+
+        if (isServer = args.includes('--server')) {
+            console.log('加载服务的方式运行');
+            port = getArgValue(args, '--port') || 4200;
+            host = getArgValue(args, '--host') || 'localhost';
+            console.log(`host:${host}`);
+            console.log(`port:${port}`);
+        }
         isInit = true;
-        isServer = options.isServer;
-        if (options.host) {
-            host = options.host;
-        }
-        if (options.port) {
-            port = options.port;
-        }
         // 判断是否以服务的形式加载页面
         ipcMain.on('ngx-electron-is-server', event => event.returnValue = isServer);
         // 如果当前以服务的形式加载页面，得到当前服务的port
@@ -232,7 +228,9 @@ export function createTray(imageUrl: string) {
     if (!appTray) {
         if (isServer) {
             // const img = nativeImage.createFromPath(image).toDataURL();
-            //     convertImgToDataURLCanvas2(`http://${ host }:${ port }/assets/${imageUrl}`).then((base64Img: string) => appTray = new Tray(nativeImage.createFromDataURL(base64Img)));
+            // convertImgToDataURLCanvas2(`http://${ host }:${ port }/assets/${imageUrl}`).then((base64Img: string) => appTray = new Tray(nativeImage.createFromDataURL(base64Img)));
+            const image = path.join(app.getAppPath(), `/dist/${app.getName()}/assets/${imageUrl}`);
+            appTray = new Tray(image);
         } else {
             const image = path.join(app.getAppPath(), `/dist/${app.getName()}/assets/${imageUrl}`);
             appTray = new Tray(image);
