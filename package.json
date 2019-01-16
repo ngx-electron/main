@@ -1,12 +1,18 @@
 {
   "name": "@ngx-electron/main",
   "version": "0.0.1",
+  "main": "index.js",
   "peerDependencies": {
-    "@angular/common": "^7.0.0",
-    "@angular/core": "^7.0.0",
-      "electron": "2.0.3",
-      "electron-builder": "20.14.7",
-      "electron-reload": "1.2.2",
-      "electron-updater": "^3.1.2"
+    "@ngx-electron/core": "0.0.1",
+    "electron": "2.0.3",
+    "electron-builder": "20.14.7",
+    "electron-reload": "1.2.2",
+    "electron-updater": "^3.1.2"
+  },
+  "devDependencies": {
+    "commander": "2.19.0"
+  },
+  "bin": {
+    "ngx-electron": "./bin/ngx-electron.js"
   }
 }

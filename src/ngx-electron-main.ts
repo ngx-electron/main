@@ -40,7 +40,7 @@ function getArgValue(args: string[], name: string): string | boolean {
  */
 export function createWindow(routerUrl: string, options: BrowserWindowConstructorOptions = {}, key = routerUrl): BrowserWindow {
     let win = new BrowserWindow({
-        hasShadow: false,
+        hasShadow: true,
         frame: false,
         transparent: true,
         show: false,
@@ -225,6 +225,10 @@ function convertImgToDataURLCanvas2(imageUrl) {
  * @param imageUrl
  */
 export function createTray(imageUrl: string) {
+
+    if (isMac()) {
+        return null;
+    }
     if (!appTray) {
         if (isServer) {
             // const img = nativeImage.createFromPath(image).toDataURL();
