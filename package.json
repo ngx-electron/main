@@ -1,18 +1,28 @@
 {
-  "name": "@ngx-electron/main",
-  "version": "0.0.1",
-  "main": "index.js",
-  "peerDependencies": {
-    "@ngx-electron/core": "0.0.1",
-    "electron": "2.0.3",
-    "electron-builder": "20.14.7",
-    "electron-reload": "1.2.2",
-    "electron-updater": "^3.1.2"
-  },
-  "devDependencies": {
-    "commander": "2.19.0"
-  },
-  "bin": {
-    "ngx-electron": "./bin/ngx-electron.js"
-  }
+    "name": "@ngx-electron/main",
+    "version": "0.0.1",
+    "main": "index.js",
+    "peerDependencies": {
+        "@ngx-electron/core": "0.0.1",
+        "electron": "2.0.3",
+        "electron-builder": "20.14.7",
+        "electron-reload": "1.2.2",
+        "electron-updater": "^3.1.2",
+        "commander": "2.19.0",
+        "npm-run-all": "4.1.3",
+        "@angular/cli": "~7.0.6",
+        "npx": "10.2.0",
+        "wait-on": "^2.1.0"
+    },
+    "devDependencies": {
+        "commander": "2.19.0",
+        "npm-run-all": "4.1.3",
+        "electron": "2.0.3",
+        "@angular/cli": "~7.0.6",
+        "npx": "10.2.0",
+        "wait-on": "^2.1.0"
+    },
+    "bin": {
+        "ngx-electron": "./bin/ngx-electron.js"
+    }
 }
