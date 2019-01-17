@@ -15,6 +15,7 @@ let appTray: Tray;
 let isServer = false;
 let host;
 let port;
+let openDevTools;
 
 function getArgValue(args: string[], name: string): string | boolean {
     let argNameIndex;
@@ -63,7 +64,7 @@ export function createWindow(routerUrl: string, options: BrowserWindowConstructo
         }) }#${ routerUrl }`);
     }
     winIdMap.set(key, win.id);
-    if (!isServer) {
+    if (isServer || openDevTools) {
         win.webContents.openDevTools();
     }
     win.on('ready-to-show', () => {
@@ -92,6 +93,7 @@ export function initElectronMainIpcListener() {
             console.log(`host:${host}`);
             console.log(`port:${port}`);
         }
+        openDevTools = getArgValue(args, '--open-dev-tools');
         isInit = true;
         // 判断是否以服务的形式加载页面
         ipcMain.on('ngx-electron-is-server', event => event.returnValue = isServer);
@@ -99,6 +101,8 @@ export function initElectronMainIpcListener() {
         ipcMain.on('ngx-electron-get-port', event => event.returnValue = port);
         // 如果当前以服务的形式加载页面，得到当前服务的host
         ipcMain.on('ngx-electron-get-host', event => event.returnValue = host);
+        // 是否打开应用调试器
+        ipcMain.on('ngx-electron-is-open-dev-tools', event => event.returnValue = openDevTools || isServer);
         // 是否为mac
         ipcMain.on('ngx-electron-is-mac', event => event.returnValue = isMac());
         // 是否为windows
