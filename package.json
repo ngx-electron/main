@@ -1,14 +1,22 @@
 {
-    "name": "@ngx-electron/main",
-    "version": "0.0.1",
-    "main": "index.js",
-    "author": "liangshen001",
-    "peerDependencies": {
-        "@ngx-electron/core": "0.0.1",
-        "electron": "2.0.3",
-        "electron-builder": "20.14.7",
-        "electron-reload": "1.2.2",
-        "electron-updater": "^3.1.2",
-        "@angular/cli": "~7.0.6"
-    }
+  "name": "@ngx-electron/main",
+  "version": "0.0.1",
+  "main": "index.js",
+  "author": "liangshen001",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ngx-electron/core.git"
+  },
+  "peerDependencies": {
+    "@ngx-electron/core": "0.0.1",
+    "electron": "2.0.3",
+    "electron-builder": "20.14.7",
+    "electron-reload": "1.2.2",
+    "electron-updater": "^3.1.2",
+    "@angular/cli": "~7.0.6"
+  },
+  "keywords": [
+    "angular",
+    "electron"
+  ]
 }

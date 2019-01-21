@@ -2,9 +2,11 @@
 
 解决在渲染进程中创建窗口，创建Tray，窗口间传递数据。同时需要在angular中引入@ngx-electron/core模块，以angular的风格来操作。
 
+完整例子请看 @ngx-electron/cli 并使用ngx-electron来创建 并代替electron来启动应用
+
 ## 使用(在主进程中引用)
 
-在启动electron时可以配置一些参数如
+在启动electron时可以配置一些参数如 先在4200端口启动angular项目 在由electron加载
 ```
 electron . --server --port 4200 --host localhost
 ```
