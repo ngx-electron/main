@@ -219,6 +219,7 @@ function convertImgToDataURLCanvas2(imageUrl) {
                 // callback(nativeImage.createFromDataURL(data.toString('base64')));
                 // 在终端中输入node index.js
                 // 打印出来的就是图片的base64编码格式，格式如下
+                console.log(base64Img);
                 resolve(base64Img);
             });
         });
@@ -235,10 +236,8 @@ export function createTray(imageUrl: string) {
     }
     if (!appTray) {
         if (isServer) {
-            // const img = nativeImage.createFromPath(image).toDataURL();
-            // convertImgToDataURLCanvas2(`http://${ host }:${ port }/assets/${imageUrl}`).then((base64Img: string) => appTray = new Tray(nativeImage.createFromDataURL(base64Img)));
-            const image = path.join(app.getAppPath(), `/dist/${app.getName()}/assets/${imageUrl}`);
-            appTray = new Tray(image);
+            convertImgToDataURLCanvas2(`http://${ host }:${ port }/assets/${imageUrl}`)
+                .then((base64Img: string) => appTray = new Tray(nativeImage.createFromDataURL(`data:image/png;base64,${base64Img}`)));
         } else {
             const image = path.join(app.getAppPath(), `/dist/${app.getName()}/assets/${imageUrl}`);
             appTray = new Tray(image);
@@ -249,12 +248,10 @@ export function createTray(imageUrl: string) {
 
         ipcMain.on('ngx-electron-set-tray-context-menu', (event, template, timestamp) => {
             console.log(JSON.stringify(template));
-            appTray.setContextMenu(Menu.buildFromTemplate(template.map((currentValue, index) => {
-                return {
-                    ...currentValue,
-                    click: () => event.sender.send(`ngx-electron-click-tray-context-menu-item-${timestamp}`, index)
-                };
-            })));
+            appTray.setContextMenu(Menu.buildFromTemplate(template.map((currentValue, index) => ({
+                ...currentValue,
+                click: () => event.sender.send(`ngx-electron-click-tray-context-menu-item-${timestamp}`, index)
+            }))));
         });
 
         ipcMain.on('ngx-electron-tray-on-event', (event, eventName, timestamp) =>
