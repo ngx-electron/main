@@ -248,12 +248,10 @@ export function createTray(imageUrl: string) {
 
         ipcMain.on('ngx-electron-set-tray-context-menu', (event, template, timestamp) => {
             console.log(JSON.stringify(template));
-            appTray.setContextMenu(Menu.buildFromTemplate(template.map((currentValue, index) => {
-                return {
-                    ...currentValue,
-                    click: () => event.sender.send(`ngx-electron-click-tray-context-menu-item-${timestamp}`, index)
-                };
-            })));
+            appTray.setContextMenu(Menu.buildFromTemplate(template.map((currentValue, index) => ({
+                ...currentValue,
+                click: () => event.sender.send(`ngx-electron-click-tray-context-menu-item-${timestamp}`, index)
+            }))));
         });
 
         ipcMain.on('ngx-electron-tray-on-event', (event, eventName, timestamp) =>

@@ -1,11 +1,19 @@
 {
   "name": "@ngx-electron/main",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "index.js",
-  "author": "liangshen001",
+  "author": {
+    "name": "liangshen001",
+    "email": "wangliang520wl@hotmail.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ngx-electron/main/issues"
+  },
+  "homepage": "https://github.com/ngx-electron/main#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ngx-electron/core.git"
+    "url": "git+https://github.com/ngx-electron/main.git"
   },
   "peerDependencies": {
     "@ngx-electron/core": "0.0.1",
