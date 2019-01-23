@@ -56,15 +56,17 @@ export function createWindow(routerUrl: string, options: BrowserWindowConstructo
         // });
         win.loadURL(loadUrl);
     } else {
-        console.log(`创建本地文件窗口`);
-        win.loadURL(` ${ url.format({
-            pathname: path.join(app.getAppPath(), `/dist/${ app.getName() }/index.html`),
+        const pathname = path.join(app.getAppPath(), `/dist/${ app.getName() }/index.html#${routerUrl}`);
+        console.log(`创建本地文件窗口 pathname:${pathname}`);
+        win.loadURL(url.format({
+            pathname,
             protocol: 'file:',
             slashes: true
-        }) }#${ routerUrl }`);
+        }));
     }
     winIdMap.set(key, win.id);
     if (isServer || openDevTools) {
+        console.log(`isServer：${isServer} openDevTools：${openDevTools} 打开窗口调试工具`);
         win.webContents.openDevTools();
     }
     win.on('ready-to-show', () => {
@@ -219,7 +221,6 @@ function convertImgToDataURLCanvas2(imageUrl) {
                 // callback(nativeImage.createFromDataURL(data.toString('base64')));
                 // 在终端中输入node index.js
                 // 打印出来的就是图片的base64编码格式，格式如下
-                console.log(base64Img);
                 resolve(base64Img);
             });
         });
