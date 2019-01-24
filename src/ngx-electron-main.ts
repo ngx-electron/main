@@ -1,10 +1,8 @@
 import {BrowserWindow, ipcMain, Tray, nativeImage, BrowserWindowConstructorOptions, app, Menu} from 'electron';
-// import * as electronReload from 'electron-reload';
 import * as path from 'path';
 import * as url from 'url';
 import { autoUpdater } from 'electron-updater';
 import * as http from 'http';
-import {Error} from 'tslint/lib/error';
 
 let isInit = false;
 // winMap
@@ -49,20 +47,20 @@ export function createWindow(routerUrl: string, options: BrowserWindowConstructo
     });
     console.log(`创建窗口routerUrl：${routerUrl}`);
     if (isServer) {
+        require('electron-reload')(app.getAppPath(), {
+            electron: require(`${app.getAppPath()}/node_modules/electron`)
+        });
         const loadUrl = `http://${ host }:${ port }/#${ routerUrl }`;
         console.log(`创建窗口加载服务：${loadUrl}`);
-        // electronReload(app.getAppPath(), {
-        //     electron: require(`${app.getAppPath()}/node_modules/electron`)
-        // });
         win.loadURL(loadUrl);
     } else {
-        const pathname = path.join(app.getAppPath(), `/dist/${ app.getName() }/index.html#${routerUrl}`);
-        console.log(`创建本地文件窗口 pathname:${pathname}`);
+        const pathname = path.join(app.getAppPath(), `/dist/${ app.getName() }/index.html`);
+        console.log(`创建本地文件窗口 pathname:${pathname}#${routerUrl}`);
         win.loadURL(url.format({
             pathname,
             protocol: 'file:',
             slashes: true
-        }));
+        }) + `#${routerUrl}`);
     }
     winIdMap.set(key, win.id);
     if (isServer || openDevTools) {
@@ -95,7 +93,7 @@ export function initElectronMainIpcListener() {
             console.log(`host:${host}`);
             console.log(`port:${port}`);
         }
-        openDevTools = getArgValue(args, '--open-dev-tools');
+        openDevTools = args.includes('--open-dev-tools');
         isInit = true;
         // 判断是否以服务的形式加载页面
         ipcMain.on('ngx-electron-is-server', event => event.returnValue = isServer);
