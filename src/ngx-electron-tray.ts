@@ -44,15 +44,15 @@ function createTray(imageUrl: string, isWeb) {
     if (isMac()) {
         return null;
     }
-    if (isServer) {
-        imageUrl = `http://${ host }:${ port }/assets/${imageUrl}`;
+    if (isServer && !isWeb) {
+        imageUrl = `http://${ host }:${ port }/${imageUrl}`;
     }
     convertImgToNativeImage(imageUrl, isWeb)
         .then(image => appTray = new Tray(image));
 }
 
 function initTray(imageUrl: string, isWeb) {
-    createTray(imageUrl, isWeb);
+    app.on('ready', createTray(imageUrl, isWeb));
     initTrayListener();
 }
 

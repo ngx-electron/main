@@ -1,6 +1,6 @@
 {
   "name": "@ngx-electron/main",
-  "version": "0.0.6",
+  "version": "0.0.11",
   "main": "index.js",
   "author": {
     "name": "liangshen001",
@@ -15,13 +15,12 @@
     "type": "git",
     "url": "git+https://github.com/ngx-electron/main.git"
   },
-  "peerDependencies": {},
-  "dependencies": {
-    "electron": "4.0.0",
-    "electron-updater": "^3.1.2"
+  "peerDependencies": {
+    "electron": "^4.0.0"
   },
-  "devDependencies": {
-    "electron-reload": "1.2.2"
+  "dependencies": {
+    "electron-updater": "^4.0.6",
+    "electron-reload": "^1.2.2"
   },
   "keywords": [
     "angular",
