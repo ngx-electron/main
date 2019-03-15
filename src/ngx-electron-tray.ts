@@ -1,4 +1,4 @@
-import {ipcMain, Tray, NativeImage, app, Menu} from 'electron';
+import {ipcMain, Tray, nativeImage, NativeImage, app, Menu} from 'electron';
 import * as http from 'http';
 import {isMac} from './ngx-electron-main-util';
 import {host, isServer, port} from './ngx-electron-main-args';
@@ -22,13 +22,13 @@ function convertImgToNativeImage(imageUrl, isWeb): Promise<NativeImage | string>
                     // 将Buffer对象转换为字符串并以base64编码格式显示
                     const base64Img = data.toString('base64');
                     const array = imageUrl.split('.');
-                    const image = NativeImage.createFromDataURL(
+                    const image = nativeImage.createFromDataURL(
                         `data:image/${array[array.length - 1]};base64,${base64Img}`);
                     resolve(image);
                 });
             });
         } else {
-            const image = NativeImage.createFromDataURL(
+            const image = nativeImage.createFromDataURL(
                 path.join(app.getAppPath(), 'dist', app.getName(), 'assets', imageUrl));
             resolve(image);
         }
